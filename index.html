@@ -380,10 +380,9 @@
 
             intervalId = setInterval(() => {
                 if (currentRound < rounds) {
-                    const randomNumber = Math.floor(Math.random() * 21) - 10;
+                    const randomNumber = Math.floor(Math.random() * 21) - 5;
                     sum += randomNumber;
-                    numberDisplay.textContent = randomNumber;
-                    playBeep();
+                    numberDisplay.textContent = randomNumber;                    
                     currentRound++;
                 } else {
                     clearInterval(intervalId);
