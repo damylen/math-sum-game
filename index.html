@@ -349,6 +349,24 @@
         newGameBtn.addEventListener('click', resetGame);
         shareBtn.addEventListener('click', shareGame);
 
+        function playBeep() {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + 0.01);
+            gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.1);
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+        }
+
         function startGame() {
             const speed = parseFloat(speedSlider.value) * 1000;
             const rounds = Math.round(roundsSlider.value);
@@ -365,6 +383,7 @@
                     const randomNumber = Math.floor(Math.random() * 21) - 10;
                     sum += randomNumber;
                     numberDisplay.textContent = randomNumber;
+                    playBeep();
                     currentRound++;
                 } else {
                     clearInterval(intervalId);
