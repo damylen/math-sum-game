@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,7 +43,7 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
             padding: 10px;
         }
@@ -93,13 +92,14 @@
         #number-display {
             font-size: 4rem;
             font-weight: bold;
-            height: 120px;
+            min-height: 120px;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #333;
             text-align: center;
-            padding: 10px;
+            padding: 20px;
+            margin: 20px 0;
         }
         
         button,
@@ -153,8 +153,15 @@
         }
 
         #language-select {
-            margin-top: 20px;
-            align-self: center;
+            margin-top: 10px;
+        }
+
+        .end-game-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: auto;
         }
 
         @media (min-width: 768px) {
@@ -177,7 +184,7 @@
             
             #number-display {
                 font-size: 6rem;
-                height: 180px;
+                min-height: 180px;
             }
             
             button,
@@ -193,7 +200,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="header">
         <svg id="logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -217,6 +223,10 @@
             </div>
             <div id="difficulty-text"></div>
             <button id="start-game" class="i18n" data-i18n="start">Start Zapping!</button>
+            <select id="language-select">
+                <option value="en">English</option>
+                <option value="nl">Nederlands</option>
+            </select>
         </div>
         <div id="number-display"></div>
         <div id="answer-section" class="answer-section hidden">
@@ -224,12 +234,10 @@
             <button id="submit-answer" class="i18n" data-i18n="submit">Submit Answer</button>
             <button id="skip-answer" class="i18n" data-i18n="skip">Skip (Reveal Sum)</button>
         </div>
-        <button id="new-game" class="hidden i18n" data-i18n="newGame">Zap Again!</button>
-        <button id="share-button" class="hidden i18n" data-i18n="share">Share Zappy Math!</button>
-        <select id="language-select">
-            <option value="en">English</option>
-            <option value="nl">Nederlands</option>
-        </select>
+        <div class="end-game-controls">
+            <button id="new-game" class="hidden i18n" data-i18n="newGame">Zap Again!</button>
+            <button id="share-button" class="hidden i18n" data-i18n="share">Share Zappy Math!</button>
+        </div>
     </div>
 
     <script>
