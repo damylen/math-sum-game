@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Sum Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        input, button {
+            margin: 10px;
+            padding: 5px;
+        }
+        #number-display {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Math Sum Game</h1>
+        <div>
+            <label for="speed">Speed (ms):</label>
+            <input type="number" id="speed" min="100" value="1000">
+        </div>
+        <div>
+            <label for="rounds">Number of Rounds:</label>
+            <input type="number" id="rounds" min="1" value="5">
+        </div>
+        <button id="start-game">Start Game</button>
+        <div id="number-display"></div>
+        <button id="show-sum" style="display: none;">Show Sum</button>
+        <button id="new-game" style="display: none;">New Game</button>
+    </div>
+
+    <script>
+        let sum = 0;
+        let currentRound = 0;
+        let intervalId;
+
+        const startGameBtn = document.getElementById('start-game');
+        const showSumBtn = document.getElementById('show-sum');
+        const newGameBtn = document.getElementById('new-game');
+        const numberDisplay = document.getElementById('number-display');
+
+        startGameBtn.addEventListener('click', startGame);
+        showSumBtn.addEventListener('click', showSum);
+        newGameBtn.addEventListener('click', resetGame);
+
+        function startGame() {
+            const speed = parseInt(document.getElementById('speed').value);
+            const rounds = parseInt(document.getElementById('rounds').value);
+            
+            sum = 0;
+            currentRound = 0;
+            startGameBtn.style.display = 'none';
+            showSumBtn.style.display = 'none';
+            newGameBtn.style.display = 'none';
+
+            intervalId = setInterval(() => {
+                if (currentRound < rounds) {
+                    const randomNumber = Math.floor(Math.random() * 21) - 10; // -10 to 10
+                    sum += randomNumber;
+                    numberDisplay.textContent = randomNumber;
+                    currentRound++;
+                } else {
+                    clearInterval(intervalId);
+                    numberDisplay.textContent = 'Game Over!';
+                    showSumBtn.style.display = 'inline-block';
+                }
+            }, speed);
+        }
+
+        function showSum() {
+            numberDisplay.textContent = `The sum is: ${sum}`;
+            showSumBtn.style.display = 'none';
+            newGameBtn.style.display = 'inline-block';
+        }
+
+        function resetGame() {
+            numberDisplay.textContent = '';
+            newGameBtn.style.display = 'none';
+            startGameBtn.style.display = 'inline-block';
+        }
+    </script>
+</body>
+</html>
