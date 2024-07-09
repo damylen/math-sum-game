@@ -5,46 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zappy Math</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            color: #333;
         }
         .game-container {
-            background-color: white;
+            width: 100%;
+            max-width: 600px;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             text-align: center;
-            width: 300px;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         .settings {
             margin-bottom: 20px;
         }
-        input, button {
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 20px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #ffd700;
+            border: none;
+            border-radius: 25px;
+            color: #333;
+            cursor: pointer;
+            font-size: 1.2rem;
             margin: 10px;
-            padding: 5px;
+            padding: 15px 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         #number-display {
-            font-size: 72px;
+            font-size: 8rem;
             font-weight: bold;
-            margin: 20px 0;
-            height: 100px;
+            height: 200px;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
         }
         .hidden {
             display: none;
         }
         #logo {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 10px;
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .bounce {
+            animation: bounce 0.5s ease;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-30px); }
+            60% { transform: translateY(-15px); }
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            #number-display { font-size: 5rem; height: 150px; }
+            button { font-size: 1rem; padding: 10px 20px; }
         }
     </style>
 </head>
@@ -54,20 +115,14 @@
             <path d="M50 5 L20 95 L50 75 L80 95 Z" fill="#FFD700" stroke="#000" stroke-width="2"/>
         </svg>
         <h1>Zappy Math</h1>
-        <div id="settings" class="settings">
-            <div>
-                <label for="speed">Speed (ms):</label>
-                <input type="number" id="speed" min="100" value="1000">
-            </div>
-            <div>
-                <label for="rounds">Number of Rounds:</label>
-                <input type="number" id="rounds" min="1" value="5">
-            </div>
-            <button id="start-game">Start Game</button>
+        <div id="settings" class="settings fade-in">
+            <input type="number" id="speed" min="100" value="1000" placeholder="Speed (ms)">
+            <input type="number" id="rounds" min="1" value="5" placeholder="Number of Rounds">
+            <button id="start-game">Start Zapping!</button>
         </div>
         <div id="number-display"></div>
-        <button id="show-sum" class="hidden">Show Sum</button>
-        <button id="new-game" class="hidden">New Game</button>
+        <button id="show-sum" class="hidden">Reveal the Zappy Sum!</button>
+        <button id="new-game" class="hidden">Zap Again!</button>
     </div>
 
     <script>
@@ -85,7 +140,6 @@
         showSumBtn.addEventListener('click', showSum);
         newGameBtn.addEventListener('click', resetGame);
 
-        // Create audio context
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
         function playBeep() {
@@ -96,7 +150,7 @@
             gainNode.connect(audioContext.destination);
 
             oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // 440 Hz = A4 note
+            oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
 
             gainNode.gain.setValueAtTime(0, audioContext.currentTime);
             gainNode.gain.linearRampToValueAtTime(1, audioContext.currentTime + 0.01);
@@ -115,32 +169,40 @@
             settingsDiv.classList.add('hidden');
             showSumBtn.classList.add('hidden');
             newGameBtn.classList.add('hidden');
+            numberDisplay.classList.add('fade-in');
 
             intervalId = setInterval(() => {
                 if (currentRound < rounds) {
-                    const randomNumber = Math.floor(Math.random() * 21) - 10; // -10 to 10
+                    const randomNumber = Math.floor(Math.random() * 21) - 10;
                     sum += randomNumber;
                     numberDisplay.textContent = randomNumber;
+                    numberDisplay.classList.add('bounce');
+                    setTimeout(() => numberDisplay.classList.remove('bounce'), 500);
                     playBeep();
                     currentRound++;
                 } else {
                     clearInterval(intervalId);
-                    numberDisplay.textContent = 'Game Over!';
+                    numberDisplay.textContent = 'Zappy End!';
                     showSumBtn.classList.remove('hidden');
+                    showSumBtn.classList.add('fade-in');
                 }
             }, speed);
         }
 
         function showSum() {
-            numberDisplay.textContent = `The sum is: ${sum}`;
+            numberDisplay.textContent = `Zappy Sum: ${sum}`;
+            numberDisplay.classList.add('bounce');
             showSumBtn.classList.add('hidden');
             newGameBtn.classList.remove('hidden');
+            newGameBtn.classList.add('fade-in');
         }
 
         function resetGame() {
             numberDisplay.textContent = '';
+            numberDisplay.classList.remove('fade-in');
             newGameBtn.classList.add('hidden');
             settingsDiv.classList.remove('hidden');
+            settingsDiv.classList.add('fade-in');
         }
     </script>
 </body>
