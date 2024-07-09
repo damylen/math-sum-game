@@ -24,18 +24,18 @@
         
         .header {
             text-align: center;
-            padding: 20px;
+            padding: 10px;
             background-color: #2193b0;
         }
         
         #logo {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 10px;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 5px;
         }
         
         h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: #fff;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
@@ -46,18 +46,18 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            padding: 20px;
+            padding: 10px;
         }
         
         .settings,
         .answer-section {
             width: 100%;
             max-width: 400px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
         .slider-container {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         
         .slider {
@@ -91,15 +91,15 @@
         }
         
         #number-display {
-            font-size: 8rem;
+            font-size: 4rem;
             font-weight: bold;
-            height: 200px;
+            height: 120px;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #333;
             text-align: center;
-            padding: 20px;
+            padding: 10px;
         }
         
         button,
@@ -110,15 +110,15 @@
             border-radius: 25px;
             color: #333;
             cursor: pointer;
-            font-size: 1.2rem;
-            margin: 10px;
-            padding: 15px 30px;
+            font-size: 1rem;
+            margin: 5px;
+            padding: 10px 20px;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         input[type="number"] {
-            width: 150px;
+            width: 120px;
             text-align: center;
         }
         
@@ -137,33 +137,64 @@
         .hidden {
             display: none;
         }
-        
+
         #rounds-value {
-            font-size: 2rem;
+            font-size: 1.5rem;
             display: block;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 5px;
         }
-        
+
         #difficulty-text {
             text-align: center;
-            margin-top: 15px;
-            margin-bottom: 15px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
         }
-        
+
         #language-select {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            margin-top: 20px;
+            align-self: center;
+        }
+
+        @media (min-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+            
+            #logo {
+                width: 120px;
+                height: 120px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .game-container {
+                padding: 20px;
+            }
+            
+            #number-display {
+                font-size: 6rem;
+                height: 180px;
+            }
+            
+            button,
+            input[type="number"],
+            select {
+                font-size: 1.2rem;
+                padding: 15px 30px;
+            }
+            
+            #difficulty-text {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <select id="language-select">
-        <option value="en">English</option>
-        <option value="nl">Nederlands</option>
-    </select>
     <div class="header">
         <svg id="logo" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
             <circle cx="60" cy="60" r="55" fill="#FFD700" stroke="#2193b0" stroke-width="4"/>
@@ -195,6 +226,10 @@
         </div>
         <button id="new-game" class="hidden i18n" data-i18n="newGame">Zap Again!</button>
         <button id="share-button" class="hidden i18n" data-i18n="share">Share Zappy Math!</button>
+        <select id="language-select">
+            <option value="en">English</option>
+            <option value="nl">Nederlands</option>
+        </select>
     </div>
 
     <script>
